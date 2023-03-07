@@ -60,8 +60,25 @@ RSpec.describe Market do
       @market.add_vendor(@vendor1)
       @market.add_vendor(@vendor2)
       @market.add_vendor(@vendor3)
-      
+
       expect(@market.sorted_item_list).to eq([@item4.name, @item1.name, @item3.name, @item2.name])
+    end
+  end
+
+  describe '#total_inventory' do
+    it 'can return total inventory hash' do
+      @market.add_vendor(@vendor1)
+      @market.add_vendor(@vendor2)
+      @market.add_vendor(@vendor3)
+
+      expected = {
+        @item1=> {quantity: 100, vendors: [@vendor1, @vendor3]},
+        @item2=> {quantity: 7, vendors: [@vendor1]},
+        @item3=> {quantity: 25, vendors: [@vendor2]},
+        @item4=> {quantity: 50, vendors: [@vendor2]}
+      }
+
+      expect(@market.total_inventory).to eq(expected)
     end
   end
 end
