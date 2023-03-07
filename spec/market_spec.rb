@@ -54,4 +54,10 @@ RSpec.describe Market do
       expect(@market.vendors_that_sell(@item4)).to eq([@vendor2])
     end
   end
+
+  describe '#sorted_item_list' do
+    it 'can return a list of all items' do
+      expect(@market.sorted_item_list).to eq([@item4.name, @item1.name, @item3.name, @item2.name])
+    end
+  end
 end
