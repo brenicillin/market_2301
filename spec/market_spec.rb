@@ -83,7 +83,7 @@ RSpec.describe Market do
   end
 
   describe '#overstocked_items' do
-    xit 'can identify overstocked items' do
+    it 'can identify overstocked items' do
       @market.add_vendor(@vendor1)
       @market.add_vendor(@vendor2)
       @market.add_vendor(@vendor3)

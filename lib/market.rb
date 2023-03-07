@@ -31,18 +31,29 @@ class Market
     items.uniq.sort
   end
 
-  def total_inventory
-   hash = Hash.new([])
-   hash2 = Hash.new(0)
-   @vendors.each do |vendor|
-    vendor.inventory.each do |item, amount|
-      hash[item.name] = hash2
-      hash2[:quantity] += amount
-      hash2[:vendors] << vendo.name
-      # hash[item.name][:vendors] << vendor
+  def check_stock(item)
+    vendors_that_sell(item).reduce(0) do |total, vendor|
+      total + vendor.check_stock(item)
     end
   end
-  require 'pry'; binding.pry
-   hash
+
+  def total_inventory
+    items_by_vendor.map do |item|
+      inventory = {
+        quantity: check_stock(item),
+        vendors: vendors_that_sell(item)
+      }
+      [item, inventory]
+    end.to_h
+  end
+
+  def items_by_vendor
+    @vendors.map { |vendor| vendor.inventory.keys }.flatten.uniq
+  end
+
+  def overstocked_items
+    items_by_vendor.select do |item|
+      total_inventory[item][:quantity] > 50 && total_inventory[item][:vendors].count > 1
+    end
   end
 end
