@@ -91,4 +91,19 @@ RSpec.describe Market do
       expect(@market.overstocked_items).to eq([@item1])
     end
   end
+
+  describe '#sell' do
+    it 'can sell items and will deplete vendors one by one until sold all' do
+      @market.add_vendor(@vendor1)
+      @market.add_vendor(@vendor2)
+      @market.add_vendor(@vendor3)
+
+      expect(@market.sell(@item2, 8)).to eq(false)
+      
+      @market.sell(@item1, 40)
+
+      expect(@vendor1.inventory).to eq({@item2=> 7})
+      expect(@vendor3.inventory).to eq({@item1=> 60})
+    end
+  end
 end
