@@ -30,4 +30,19 @@ class Market
     end
     items.uniq.sort
   end
+
+  def total_inventory
+   hash = Hash.new([])
+   hash2 = Hash.new(0)
+   @vendors.each do |vendor|
+    vendor.inventory.each do |item, amount|
+      hash[item.name] = hash2
+      hash2[:quantity] += amount
+      hash2[:vendors] << vendo.name
+      # hash[item.name][:vendors] << vendor
+    end
+  end
+  require 'pry'; binding.pry
+   hash
+  end
 end
