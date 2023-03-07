@@ -56,4 +56,17 @@ class Market
       total_inventory[item][:quantity] > 50 && total_inventory[item][:vendors].count > 1
     end
   end
+
+  def sell(item, amount)
+    return false if total_inventory[item][:quantity] < amount
+    vendors_that_sell(item).each do |vendor|
+      if vendor.inventory[item] > amount
+        vendor.inventory[item] -= amount
+        break
+      else
+        amount -= vendor.inventory[item]
+        vendor.inventory[item] = 0
+      end
+    end
+  end
 end

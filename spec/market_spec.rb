@@ -99,10 +99,14 @@ RSpec.describe Market do
       @market.add_vendor(@vendor3)
 
       expect(@market.sell(@item2, 8)).to eq(false)
+
+      @market.sell(@item3, 20)
+      require 'pry'; binding.pry
+      expect(@vendor2.inventory).to eq({@item3=> 5, @item4=> 50})
       
       @market.sell(@item1, 40)
 
-      expect(@vendor1.inventory).to eq({@item2=> 7})
+      expect(@vendor1.inventory).to eq({@item1=> 0, @item2=> 7})
       expect(@vendor3.inventory).to eq({@item1=> 60})
     end
   end
